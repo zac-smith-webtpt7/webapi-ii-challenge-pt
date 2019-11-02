@@ -20,6 +20,25 @@ router.get("/", (req, res) => {
 });
 
 // GET /:id
+router.get("/:id", (req, res) => {
+  const id = req.params.id;
+  db.findById(id)
+    .then(post => {
+      if (!id) {
+        res.status(400).json({
+          message: `Post id ${id} does not exist`
+        });
+      } else {
+        res.status(200).json({
+          message: "Success",
+          post
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({});
+    });
+});
 
 // POST
 
