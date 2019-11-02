@@ -16,5 +16,12 @@
   },
   "devDependencies": {
     "nodemon": "^1.19.3"
+  },
+  {
+    "nodemonConfig": {
+      "ingore": ["test/*", "docs/*"],
+      "delay": "2500"
+    }
   }
+
 }
