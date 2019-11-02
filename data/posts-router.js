@@ -101,29 +101,35 @@ router.post("/", (req, res) => {
 
 // POST /:id/comments
 
-// PUT /:id
+// PUT /:id ~ MVP
 router.put("/:id", (req, res) => {
   const id = req.params.id;
   const postUpdate = req.body;
 
-  db.update(id, postUpdate)
-    .then(post => {
-      if (post) {
-        res.status(201).json({
-          id,
-          postUpdate
-        });
-      } else {
-        res.status(404).json({
-          message: `The post with id ${id} does not exist`
-        });
-      }
-    })
-    .catch(err =>
-      res.status(500).json({
-        message: `The post with id ${id} could not be modified. ERROR: ${err}`
+  if (!postUpdate.title || !postUpdate.contents) {
+    res.status(400).json({
+      message: `Please provide title and contents for the post`
+    });
+  } else {
+    db.update(id, postUpdate)
+      .then(post => {
+        if (post) {
+          res.status(201).json({
+            id,
+            postUpdate
+          });
+        } else {
+          res.status(404).json({
+            message: `The post with id ${id} does not exist`
+          });
+        }
       })
-    );
+      .catch(err =>
+        res.status(500).json({
+          message: `The post with id ${id} could not be modified. ERROR: ${err}`
+        })
+      );
+  }
 });
 
 // DELETE /:id ~ MVP
