@@ -99,10 +99,29 @@ router.post("/", (req, res) => {
     });
 });
 
-// /:id/comments
+// POST /:id/comments
 
 // PUT /:id
 
-// DELETE /:id
+// DELETE /:id ~ MVP
+router.delete("/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.remove(id)
+    .then(deletedPost => {
+      if (deletedPost) {
+        res.status(304).end();
+      } else {
+        res.status(404).json({
+          message: `The post with id ${id} does not exist`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: `The post could not be removed. ERROR: ${err}`
+      });
+    });
+});
 
 module.exports = router;
